@@ -79,16 +79,16 @@ export const Header: React.FC<HeaderProps> = ({
             })}
           </nav>
 
-          {/* Right: Pre-Orders Button & Sticky "Shop Now" button */}
+          {/* Right: Cart Button & Sticky "Shop Now" button */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Pre-Orders Button */}
+            {/* Cart Button */}
             <button
               id="header-cart-btn"
               type="button"
               onClick={onOpenCart}
               className="relative p-2 rounded-md text-[#141414] hover:bg-[#F5F4F0] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1C9A6C] cursor-pointer"
-              aria-label={`Pre-Orders (${cartCount} ${cartCount === 1 ? 'item' : 'items'})`}
-              title="View Pre-Orders"
+              aria-label={`Cart (${cartCount} ${cartCount === 1 ? 'item' : 'items'})`}
+              title="View Cart"
             >
               <ShoppingBag className="w-5 h-5" />
               {cartCount > 0 && (

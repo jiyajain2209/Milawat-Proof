@@ -121,7 +121,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
 
-      {/* Card Footer: Price & Pre-Order */}
+      {/* Card Footer: Price & Buy Now */}
       <div className="mt-6 pt-4 border-t border-[#F5F4F0]">
         <div className="flex items-baseline justify-between mb-3">
           <div className="flex items-baseline gap-1.5">
@@ -144,7 +144,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </span>
         </div>
 
-        {/* Action Buttons: Details & Pre-Order in Green Accent */}
+        {/* Action Buttons: Details & Buy Now in Green Accent */}
         <div className="grid grid-cols-2 gap-2">
           <button
             id={`view-details-${product.id}`}
@@ -157,14 +157,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </button>
 
           <button
-            id={`pre-order-${product.id}`}
+            id={`buy-now-${product.id}`}
             type="button"
             onClick={() => onAddToCart(product)}
-            aria-label={`Pre-Order ${product.name}`}
+            aria-label={`Buy Now ${product.name}`}
             className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer shadow-2xs"
           >
             <Plus className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-            <span>Pre-Order</span>
+            <span>Buy Now</span>
           </button>
         </div>
       </div>

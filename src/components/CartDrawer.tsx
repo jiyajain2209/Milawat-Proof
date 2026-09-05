@@ -41,7 +41,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         <div className="p-5 border-b border-[#F5F4F0] flex items-center justify-between bg-white">
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-5 h-5 text-[#1C9A6C]" />
-            <h3 className="font-bold text-base text-[#141414]">Your Pre-Orders</h3>
+            <h3 className="font-bold text-base text-[#141414]">Your Cart</h3>
             <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#F5F4F0] text-[#717171]">
               {items.reduce((acc, i) => acc + i.quantity, 0)} {items.reduce((acc, i) => acc + i.quantity, 0) === 1 ? 'kit' : 'kits'}
             </span>
@@ -52,7 +52,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             type="button"
             onClick={onClose}
             className="p-1.5 rounded text-[#717171] hover:text-[#141414] hover:bg-[#F5F4F0]"
-            aria-label="Close pre-orders"
+            aria-label="Close cart"
           >
             <X className="w-5 h-5" />
           </button>
@@ -65,7 +65,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <div className="w-12 h-12 rounded-full bg-[#F5F4F0] flex items-center justify-center mb-3">
                 <ShoppingBag className="w-6 h-6 text-[#717171]" />
               </div>
-              <p className="text-base font-semibold text-[#141414]">No pre-orders yet</p>
+              <p className="text-base font-semibold text-[#141414]">Your cart is empty</p>
               <p className="text-xs text-[#717171] mt-1 max-w-xs">
                 Select a milk, paneer, or ghee diagnostic kit from the shelf to pre-order for your kitchen.
               </p>
@@ -140,7 +140,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               onClick={onCheckout}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] text-white text-sm font-semibold tracking-wide transition-colors cursor-pointer"
             >
-              <span>Confirm Pre-Order</span>
+              <span>Buy Now</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

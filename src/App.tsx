@@ -9,7 +9,6 @@ import { ShopSection } from './components/ShopSection';
 import { FAQ } from './components/FAQ';
 import { ContactSection } from './components/ContactSection';
 import { CartDrawer } from './components/CartDrawer';
-import { PreOrderCheckoutModal } from './components/PreOrderCheckoutModal';
 import { LiquidWaveDivider } from './components/LiquidWaveDivider';
 import { AdminPortal } from './components/admin/AdminPortal';
 import { Product, CartItem, Order } from './types';
@@ -29,10 +28,9 @@ export default function App() {
   const [activeNav, setActiveNav] = useState('home');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([
-    // Start with empty pre-orders cart
+    // Start with empty carts cart
   ]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -80,7 +78,7 @@ export default function App() {
       }
       return [...prev, { product, quantity: 1 }];
     });
-    showToast(`Added "${product.name}" to pre-orders.`);
+    showToast(`Added "${product.name}" to carts.`);
     setIsCartOpen(true);
   };
 
@@ -100,17 +98,28 @@ export default function App() {
 
   const handleRemoveItem = (productId: string) => {
     setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
-    showToast('Item removed from pre-orders.');
+    showToast('Item removed from carts.');
   };
 
-  const handleCheckout = () => {
-    setIsCartOpen(false);
-    setIsCheckoutModalOpen(true);
+  const handleCheckout = async () => {
+    try {
+      showToast('Preparing secure Shopify checkout...');
+      const { createShopifyCartAndGetCheckoutUrl } = await import('./services/shopify');
+      const itemsForShopify = cartItems.map(item => ({
+        title: item.product.name,
+        quantity: item.quantity
+      }));
+      const checkoutUrl = await createShopifyCartAndGetCheckoutUrl(itemsForShopify);
+      window.location.href = checkoutUrl;
+    } catch (err: any) {
+      console.error('Checkout error:', err);
+      showToast(err.message || 'Error redirecting to checkout.');
+    }
   };
 
   const handleOrderSuccess = (order: Order) => {
     setCartItems([]);
-    showToast(`Pre-order ${order.orderId} registered! Pending manual verification.`);
+    showToast(`Checkout ${order.orderId} registered! Pending manual verification.`);
   };
 
   const handleNavigate = (navId: string) => {
@@ -220,12 +229,6 @@ export default function App() {
       />
 
       {/* Pre-Order Checkout Modal */}
-      <PreOrderCheckoutModal
-        isOpen={isCheckoutModalOpen}
-        onClose={() => setIsCheckoutModalOpen(false)}
-        items={cartItems}
-        onOrderSuccess={handleOrderSuccess}
-      />
 
       {/* Main Footer in Dark Aesthetic */}
       <Footer onNavigate={handleNavigate} onToast={showToast} />

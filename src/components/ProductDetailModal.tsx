@@ -126,7 +126,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               <button
-                id={`modal-pre-order-${product.id}`}
+                id={`modal-buy-now-${product.id}`}
                 type="button"
                 onClick={() => {
                   onAddToCart(product);
@@ -134,7 +134,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 }}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] text-white text-sm font-semibold tracking-wide transition-colors cursor-pointer"
               >
-                <span>Pre-Order</span>
+                <span>Buy Now</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
