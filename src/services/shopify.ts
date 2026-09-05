@@ -3,7 +3,7 @@ export async function fetchShopifyProducts() {
   const token = import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
   if (!domain || !token) {
-    console.error('Shopify environment variables are not set.');
+    console.warn('Shopify environment variables are not set.');
     return [];
   }
 
@@ -47,7 +47,7 @@ export async function fetchShopifyProducts() {
       variantId: edge.node.variants.edges[0]?.node.id,
     }));
   } catch (error) {
-    console.error('Error fetching Shopify products:', error);
+    console.warn('Error fetching Shopify products:', error);
     return [];
   }
 }

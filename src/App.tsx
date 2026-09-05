@@ -129,7 +129,7 @@ export default function App() {
     const checkoutItems = cartItems.map(item => {
       const variantId = shopifyProductsMap[item.product.name];
       if (!variantId) {
-        console.error(`No Shopify variant found for product: ${item.product.name}`);
+        console.warn(`No Shopify variant found for product: ${item.product.name}`);
       }
       return {
         variantId: variantId,
@@ -147,7 +147,7 @@ export default function App() {
       const checkoutUrl = await createShopifyCheckout(checkoutItems);
       window.location.href = checkoutUrl;
     } catch (error) {
-      console.error('Error creating checkout:', error);
+      console.warn('Error creating checkout:', error);
       showToast('Failed to initiate checkout. Please try again.');
       setIsCheckoutLoading(false);
     }
