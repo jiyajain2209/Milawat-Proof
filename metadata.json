@@ -1,0 +1,7 @@
+{
+  "name": "Milawat Proof",
+  "description": "At-home food adulteration testing kits for milk, paneer, and ghee for urban households.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
