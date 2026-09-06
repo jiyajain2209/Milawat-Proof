@@ -53,7 +53,7 @@ export const WhyWeExist: React.FC = () => {
             Why Milawat Proof exists
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#525252] leading-relaxed">
-            Food adulteration is a silent, everyday reality across urban Indian households. Milk, paneer, and ghee are routinely stretched with starch, detergents, and synthetic chemicals — yet most families have never had an accessible way to verify what is served on their table.
+            Food adulteration is a silent, everyday reality across urban Indian households. Milk, paneer, and ghee are routinely stretched with starch, detergents, and synthetic chemicals, yet most families have never had an accessible way to verify what is served on their table.
           </p>
         </div>
 

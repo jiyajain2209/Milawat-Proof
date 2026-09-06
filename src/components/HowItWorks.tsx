@@ -16,7 +16,7 @@ export const HowItWorks: React.FC = () => {
       icon: Clock,
       title: 'Wait 2 minutes',
       description:
-        'Let the reagent react naturally on your counter — no equipment, no lab, and no waiting days.',
+        'Let the reagent react naturally on your counter. No equipment, no lab, and no waiting days.',
     },
     {
       number: '3',
@@ -42,7 +42,7 @@ export const HowItWorks: React.FC = () => {
             How It Works
           </h2>
           <p className="mt-3 text-base sm:text-lg text-[#525252] leading-relaxed">
-            Designed for busy Indian kitchens. You don&apos;t need a science degree or expensive equipment — just follow three simple steps before you cook.
+            Designed for busy Indian kitchens. You don&apos;t need a science degree or expensive equipment. Just follow three simple steps before you cook.
           </p>
         </div>
 

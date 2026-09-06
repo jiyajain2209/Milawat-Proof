@@ -59,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({
               id="hero-subheadline"
               className="text-lg sm:text-xl text-[#525252] leading-relaxed max-w-2xl font-normal"
             >
-              Test your milk, paneer, and ghee for adulteration — at home, in under 5 minutes. No lab required.
+              Test your milk, paneer, ghee, and whey protein for adulteration, at home, in under 5 minutes. No lab required.
             </p>
 
             {/* Call to Action Group */}
@@ -99,11 +99,11 @@ export const Hero: React.FC<HeroProps> = ({
               id="hero-image-container"
               className="relative w-full aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] rounded-xl overflow-hidden bg-[#F5F4F0] border border-[#ebe9e3]"
             >
-              {/* Placeholder image of fresh milk bottles and rustic counter with traditional Indian milk canister representation */}
+              {/* Image comparing real vs adulterated dairy */}
               <img
                 id="hero-photo"
-                src="https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=1200&q=80"
-                alt="Fresh milk bottles and traditional steel milk canister resting on a rustic counter"
+                src="/Screenshot%202026-09-06%20121414.png"
+                alt="Real vs adulterated milk, paneer, and ghee comparison"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-[1.02]"
                 loading="eager"

@@ -13,10 +13,8 @@ import { PreOrderCheckoutModal } from './components/PreOrderCheckoutModal';
 import { LiquidWaveDivider } from './components/LiquidWaveDivider';
 import { AdminPortal } from './components/admin/AdminPortal';
 import { Product, CartItem, Order } from './types';
-import { fetchShopifyProducts, createShopifyCheckout } from './services/shopify';
 
 export default function App() {
-  const [shopifyProductsMap, setShopifyProductsMap] = useState<Record<string, string>>({});
   const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
   const [currentRoute, setCurrentRoute] = useState<'store' | 'admin'>(() => {
     if (typeof window !== 'undefined') {
@@ -49,17 +47,6 @@ export default function App() {
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('hashchange', handlePopState);
     
-    // Fetch Shopify products
-    fetchShopifyProducts().then((products) => {
-      const map: Record<string, string> = {};
-      products.forEach((p: any) => {
-        if (p.title && p.variantId) {
-          map[p.title] = p.variantId;
-        }
-      });
-      setShopifyProductsMap(map);
-    });
-
     return () => {
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('hashchange', handlePopState);
@@ -118,39 +105,14 @@ export default function App() {
     showToast('Item removed from pre-orders.');
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (cartItems.length === 0) {
       showToast('Cart is empty.');
       return;
     }
 
-    setIsCheckoutLoading(true);
-    
-    const checkoutItems = cartItems.map(item => {
-      const variantId = shopifyProductsMap[item.product.name];
-      if (!variantId) {
-        console.warn(`No Shopify variant found for product: ${item.product.name}`);
-      }
-      return {
-        variantId: variantId,
-        quantity: item.quantity
-      };
-    }).filter(item => item.variantId);
-
-    if (checkoutItems.length === 0) {
-      setIsCheckoutLoading(false);
-      showToast('None of the items in your cart are available for checkout currently.');
-      return;
-    }
-
-    try {
-      const checkoutUrl = await createShopifyCheckout(checkoutItems);
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      console.warn('Error creating checkout:', error);
-      showToast('Failed to initiate checkout. Please try again.');
-      setIsCheckoutLoading(false);
-    }
+    setIsCartOpen(false);
+    setIsCheckoutModalOpen(true);
   };
 
   const handleOrderSuccess = (order: Order) => {
@@ -262,6 +224,7 @@ export default function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
         onCheckout={handleCheckout}
+        isCheckoutLoading={isCheckoutLoading}
       />
 
       {/* Pre-Order Checkout Modal */}

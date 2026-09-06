@@ -18,6 +18,7 @@ export interface Product {
   sampleRequired: string;
   dimensions: string;
   batchNo: string;
+  imageUrl?: string;
 }
 
 export interface CartItem {

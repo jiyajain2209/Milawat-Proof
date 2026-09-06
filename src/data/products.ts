@@ -8,7 +8,7 @@ export const products: Product[] = [
     tier: 'single',
     tierLabel: 'Single-Use',
     tagline: 'Instant one-time test for daily milk',
-    description: 'Checks your milk for the 5 most common signs of adulteration — urea, preservatives, starch, sugar, and neutraliser — in one simple at-home test.',
+    description: 'Checks your milk for the 5 most common signs of adulteration, namely urea, preservatives, starch, sugar, and neutraliser, in one simple at-home test.',
     testsCovered: [
       'Urea',
       'Preservatives',
@@ -28,6 +28,7 @@ export const products: Product[] = [
     sampleRequired: '2ml raw or boiled milk',
     dimensions: '7x5x4 cm',
     batchNo: 'MP2405-001',
+    imageUrl: '/Gemini_Generated_Image_5uspyv5uspyv5usp.png',
   },
   {
     id: 'dairy-purity-kit',
@@ -36,7 +37,7 @@ export const products: Product[] = [
     tier: 'single',
     tierLabel: 'Single-Use',
     tagline: 'Checks butter, ghee, and paneer',
-    description: 'One kit to check butter, ghee, and paneer for adulteration — because dairy tampering doesn\'t stop at milk.',
+    description: 'One kit to check butter, ghee, and paneer for adulteration, because dairy tampering doesn\'t stop at milk.',
     testsCovered: [
       'Vanaspati',
       'Starch',
@@ -54,15 +55,16 @@ export const products: Product[] = [
     sampleRequired: 'Small amount of dairy product',
     dimensions: '7x5x4 cm',
     batchNo: 'MP2405-002',
+    imageUrl: '/Gemini_Generated_Image_w64bs4w64bs4w64b.png',
   },
   {
     id: 'protein-purity-kit',
-    name: 'Protein Purity Test Kit',
+    name: 'Protein Purity Testing Kit',
     category: 'ghee', // Will leave it as ghee/bundle for now, doesn't really matter for UI unless we filter by it
     tier: 'single',
     tierLabel: 'Single-Use',
     tagline: 'Checks whey protein for fillers',
-    description: 'Checks if your whey protein is genuinely pure — or cut with cheaper fillers like milk powder, soy protein, and starch.',
+    description: 'Checks if your whey protein is genuinely pure, or cut with cheaper fillers like milk powder, soy protein, and starch.',
     testsCovered: [
       'Milk Powder',
       'Soy Protein',
@@ -80,5 +82,6 @@ export const products: Product[] = [
     sampleRequired: '1 scoop of protein powder',
     dimensions: '7x5x4 cm',
     batchNo: 'MP2405-003',
+    imageUrl: '/Gemini_Generated_Image_su9sdrsu9sdrsu9s.png',
   }
 ];

@@ -9,12 +9,6 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    id: 'faq-accuracy',
-    question: 'How accurate are these test kits?',
-    answer:
-      'Our colorimetric chemical reagents are calibrated against standard diagnostic laboratory thresholds. They reliably detect adulterants above the minimum permissible limits (typically >0.1% for urea, starch, and synthetic neutralisers) with over 98% concordance with spectrophotometric lab assays.',
-  },
-  {
     id: 'faq-duration',
     question: 'How long does a test take?',
     answer:
@@ -24,19 +18,19 @@ const faqData: FAQItem[] = [
     id: 'faq-equipment',
     question: 'Do I need any special equipment?',
     answer:
-      'No. Everything required comes inside the box — test tubes, graduated sample pipettes, dropper bottles with sealed reagents, and a pocket-sized waterproof interpretation chart. All you need is a clean kitchen counter and your food sample.',
+      'No. Everything required comes inside the box, including test tubes, graduated sample pipettes, dropper bottles with sealed reagents, and a pocket-sized waterproof interpretation chart. All you need is a clean kitchen counter and your food sample.',
   },
   {
     id: 'faq-adulterants',
     question: 'What adulterants can this detect?',
     answer:
-      'The kits cover the most rampant dairy contaminants: urea, chemical detergents, neutralisers (baking soda and carbonates), formalin preservatives, starch binding agents, non-permitted azo dyes/artificial food colors, vanaspati (hydrogenated vegetable fat), and cheap mineral oils in desi ghee.',
+      'Our Milk Adulteration Test Kit detects urea, preservatives, starch, sugar, and neutraliser. Our Dairy Purity Test Kit detects adulterants in butter, ghee, and paneer. Our Protein Purity Test Kit detects milk powder, soy protein, and starch used to cut whey protein.',
   },
   {
     id: 'faq-multi-use-test-count',
     question: 'How many tests can I perform with each kit?',
     answer:
-      'We offer two formats: our Single-Use kits are designed for a single test for immediate spot verification, while our Multi-Use kits contain enough reagents and testing vials to perform multiple separate tests (8 to 28 tests per kit depending on the product).',
+      'It depends on the kit: the Milk Adulteration Test Kit performs 1 test, the Dairy Purity Test Kit performs 5 tests, and the Protein Purity Test Kit performs 1 test.',
   },
   {
     id: 'faq-difference-lab',
@@ -52,9 +46,9 @@ const faqData: FAQItem[] = [
   },
   {
     id: 'faq-fssai-certified',
-    question: 'Is this FSSAI approved / lab certified?',
+    question: 'Is this certified?',
     answer:
-      'The reagents and colorimetric protocols employed in our kits are aligned with the Rapid Analytical Food Testing (RAFT) methodologies recognized in food safety guidelines. The formulation batches are manufactured in an ISO-certified facility and validated by independent third-party NABL-accredited testing laboratories.',
+      'Yes — Milawat Proof is certified by the National Dairy Development Board of India (NDDB).',
   },
 ];
 

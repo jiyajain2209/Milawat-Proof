@@ -1,6 +1,6 @@
 import React from 'react';
 import { CartItem } from '../types';
-import { X, Trash2, ShoppingBag, ArrowRight, ShieldCheck } from 'lucide-react';
+import { X, Trash2, ShoppingBag, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface CartDrawerProps {
   onUpdateQuantity: (productId: string, delta: number) => void;
   onRemoveItem: (productId: string) => void;
   onCheckout: () => void;
+  isCheckoutLoading?: boolean;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -18,6 +19,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onUpdateQuantity,
   onRemoveItem,
   onCheckout,
+  isCheckoutLoading = false,
 }) => {
   if (!isOpen) return null;
 
@@ -138,10 +140,20 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               id="confirm-preorder-btn"
               type="button"
               onClick={onCheckout}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] text-white text-sm font-semibold tracking-wide transition-colors cursor-pointer"
+              disabled={isCheckoutLoading}
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] disabled:opacity-70 disabled:cursor-not-allowed text-white text-sm font-semibold tracking-wide transition-colors cursor-pointer"
             >
-              <span>Confirm Pre-Order</span>
-              <ArrowRight className="w-4 h-4" />
+              {isCheckoutLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Redirecting to checkout...</span>
+                </>
+              ) : (
+                <>
+                  <span>Confirm Pre-Order</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           </div>
         )}

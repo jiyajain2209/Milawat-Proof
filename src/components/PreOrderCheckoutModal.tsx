@@ -142,7 +142,7 @@ export const PreOrderCheckoutModal: React.FC<PreOrderCheckoutModalProps> = ({
               <p className="text-xs text-[#717171]">
                 {confirmedOrder
                   ? 'Your reservation is registered in our laboratory queue'
-                  : 'Pay ₹0 today — manual verification prior to dispatch'}
+                  : 'Pay ₹0 today. Manual verification prior to dispatch'}
               </p>
             </div>
           </div>
@@ -173,7 +173,7 @@ export const PreOrderCheckoutModal: React.FC<PreOrderCheckoutModalProps> = ({
                 Thank You, {confirmedOrder.customerName}!
               </h4>
               <p className="text-xs text-[#525252] max-w-md mx-auto mt-1 leading-relaxed">
-                Your pre-order has been logged in our Firestore database. Because this is an authentic batch diagnostic test kit, our lab team verifies stock allocation and manually confirms every order before dispatch.
+                Thanks! We've received your pre-order and will contact you shortly to confirm and arrange payment.
               </p>
             </div>
 
@@ -467,7 +467,7 @@ export const PreOrderCheckoutModal: React.FC<PreOrderCheckoutModalProps> = ({
                   </>
                 ) : (
                   <>
-                    <span>Submit Pre-Order (₹{totalAmount})</span>
+                    <span>Confirm Pre-Order (₹{totalAmount})</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}

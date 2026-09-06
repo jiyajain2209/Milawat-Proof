@@ -94,10 +94,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onSuccessToast }
                     Phone &amp; WhatsApp
                   </span>
                   <a
-                    href="tel:9717655516"
+                    href="tel:+916359244987"
                     className="text-base font-bold text-[#141414] hover:text-[#1C9A6C] transition-colors"
                   >
-                    +91 97176 55516
+                    +91 6359244987
                   </a>
                   <p className="text-xs text-[#717171] mt-0.5">
                     Mon–Sat, 9:30 AM to 7:00 PM IST
@@ -144,7 +144,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onSuccessToast }
               <span className="font-semibold text-[#141414] block mb-1">
                 Got an ambiguous test strip color?
               </span>
-              Take a clear photograph of your reaction tube next to our color guide and WhatsApp it to <strong>+91 97176 55516</strong> for instant expert verification.
+              Take a clear photograph of your reaction tube next to our color guide and WhatsApp it to <strong>+91 6359244987</strong> for instant expert verification.
             </div>
           </div>
 
