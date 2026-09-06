@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { CartItem, Order } from '../types';
+import { CartItem, Order, Product } from '../types';
 import { createPreOrder } from '../services/orderService';
+import { products } from '../data/products';
 import {
   X,
   ShieldCheck,
@@ -12,6 +13,10 @@ import {
   Package,
   ArrowRight,
   Sparkles,
+  Plus,
+  Minus,
+  Trash2,
+  ShoppingCart
 } from 'lucide-react';
 
 interface PreOrderCheckoutModalProps {
@@ -19,6 +24,9 @@ interface PreOrderCheckoutModalProps {
   onClose: () => void;
   items: CartItem[];
   onOrderSuccess: (order: Order) => void;
+  onUpdateQuantity: (productId: string, delta: number) => void;
+  onRemoveItem: (productId: string) => void;
+  onAddToCart: (product: Product) => void;
 }
 
 export const PreOrderCheckoutModal: React.FC<PreOrderCheckoutModalProps> = ({
@@ -26,6 +34,9 @@ export const PreOrderCheckoutModal: React.FC<PreOrderCheckoutModalProps> = ({
   onClose,
   items,
   onOrderSuccess,
+  onUpdateQuantity,
+  onRemoveItem,
+  onAddToCart,
 }) => {
   const [customerName, setCustomerName] = useState('');
   const [phone, setPhone] = useState('');
@@ -277,8 +288,8 @@ export const PreOrderCheckoutModal: React.FC<PreOrderCheckoutModalProps> = ({
         ) : (
           /* PRE-ORDER SUBMISSION FORM */
           <form id="pre-order-form" onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-5">
-            {/* Order Items Preview Banner */}
-            <div className="p-3.5 rounded-lg bg-[#FAFAF8] border border-[#E5E4DE] space-y-2">
+            {/* Interactive Cart Summary */}
+            <div className="space-y-3">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-[#141414] uppercase tracking-wider">
                   Order Summary ({totalKitsCount} {totalKitsCount === 1 ? 'kit' : 'kits'})
@@ -287,195 +298,283 @@ export const PreOrderCheckoutModal: React.FC<PreOrderCheckoutModalProps> = ({
                   Total: ₹{totalAmount}
                 </span>
               </div>
-              <div className="text-xs text-[#525252] max-h-24 overflow-y-auto space-y-1 pr-1">
-                {items.map((item) => (
-                  <div key={item.product.id} className="flex justify-between items-center py-0.5">
-                    <span className="truncate max-w-[280px]">
-                      {item.product.name} ({item.product.tier === 'multi' ? 'Multi-Use' : 'Single-Use'}) &times; {item.quantity}
-                    </span>
-                    <span className="font-semibold shrink-0">
-                      ₹{item.product.price * item.quantity}
-                    </span>
+              
+              <div className="max-h-[35vh] overflow-y-auto space-y-3 pr-1">
+                {items.length === 0 ? (
+                  <div className="text-center py-6">
+                    <ShoppingCart className="w-10 h-10 text-[#D5D4CE] mx-auto mb-2" />
+                    <p className="text-sm text-[#525252]">Your cart is empty.</p>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Notice regarding Pre-order model */}
-            <div className="flex items-start gap-2.5 p-3 rounded-lg bg-[#1C9A6C]/8 border border-[#1C9A6C]/20 text-xs text-[#141414]">
-              <ShieldCheck className="w-4 h-4 text-[#1C9A6C] shrink-0 mt-0.5" />
-              <p className="leading-relaxed">
-                <strong>Pre-Order Policy:</strong> Orders are registered as <strong>Pending</strong> in our database. You will not be charged now. Our lab team will verify reagent batch availability and contact you prior to delivery.
-              </p>
-            </div>
-
-            {errorMsg && (
-              <div
-                id="pre-order-error-message"
-                className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700"
-              >
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
-                <span>{errorMsg}</span>
-              </div>
-            )}
-
-            {/* Inputs */}
-            <div className="space-y-3.5">
-              <div>
-                <label
-                  htmlFor="preorder-name"
-                  className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
-                >
-                  Full Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="preorder-name"
-                  type="text"
-                  required
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="e.g. Priyanshu Sharma"
-                  className="w-full px-3.5 py-2.5 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label
-                    htmlFor="preorder-phone"
-                    className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
-                  >
-                    Mobile Phone <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="preorder-phone"
-                    type="tel"
-                    required
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="10-digit mobile number"
-                    className="w-full px-3.5 py-2.5 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="preorder-email"
-                    className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
-                  >
-                    Email Address <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="preorder-email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
-                    className="w-full px-3.5 py-2.5 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="preorder-address"
-                  className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
-                >
-                  Flat, House No., Building &amp; Street Address <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  id="preorder-address"
-                  required
-                  rows={2}
-                  value={addressLine}
-                  onChange={(e) => setAddressLine(e.target.value)}
-                  placeholder="e.g. Flat 301, Tower B, Green Glen Layout, Bellandur"
-                  className="w-full px-3.5 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden resize-none transition-colors"
-                />
-              </div>
-
-              <div className="grid grid-cols-3 gap-2.5">
-                <div>
-                  <label
-                    htmlFor="preorder-city"
-                    className="block text-[11px] font-bold text-[#141414] uppercase tracking-wider mb-1"
-                  >
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="preorder-city"
-                    type="text"
-                    required
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="Bengaluru"
-                    className="w-full px-3 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-xs text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="preorder-state"
-                    className="block text-[11px] font-bold text-[#141414] uppercase tracking-wider mb-1"
-                  >
-                    State
-                  </label>
-                  <input
-                    id="preorder-state"
-                    type="text"
-                    value={stateName}
-                    onChange={(e) => setStateName(e.target.value)}
-                    placeholder="Karnataka"
-                    className="w-full px-3 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-xs text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="preorder-pincode"
-                    className="block text-[11px] font-bold text-[#141414] uppercase tracking-wider mb-1"
-                  >
-                    PIN Code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="preorder-pincode"
-                    type="text"
-                    required
-                    maxLength={6}
-                    value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                    placeholder="560103"
-                    className="w-full px-3 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-xs text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <div className="pt-2">
-              <button
-                id="submit-preorder-button"
-                type="submit"
-                disabled={isSubmitting || items.length === 0}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] disabled:opacity-50 text-white text-sm font-bold tracking-wide transition-colors cursor-pointer shadow-xs"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>Saving Pre-Order to Database...</span>
-                  </>
                 ) : (
-                  <>
-                    <span>Confirm Pre-Order (₹{totalAmount})</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
+                  items.map((item) => (
+                    <div key={item.product.id} className="flex gap-3 p-3 bg-[#FAFAF8] rounded-lg border border-[#E5E4DE]">
+                      <div className="w-16 h-16 rounded-md bg-[#F5F4F0] overflow-hidden shrink-0">
+                        <img 
+                          src={item.product.imageUrl} 
+                          alt={item.product.name} 
+                          className="w-full h-full object-cover" 
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div className="flex-1 flex flex-col justify-between">
+                        <div>
+                          <h4 className="text-sm font-bold text-[#141414] line-clamp-1">{item.product.name}</h4>
+                          <span className="text-[11px] text-[#717171] uppercase tracking-wider">
+                            {item.product.tier === 'multi' ? 'Multi-Use' : 'Single-Use'}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="font-bold text-sm text-[#141414]">
+                            ₹{item.product.price}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => onUpdateQuantity(item.product.id, -1)}
+                              className="w-6 h-6 rounded flex items-center justify-center bg-white border border-[#D5D4CE] hover:border-[#1C9A6C] hover:text-[#1C9A6C] transition-colors"
+                            >
+                              <Minus className="w-3.5 h-3.5" />
+                            </button>
+                            <span className="text-xs font-semibold w-4 text-center">
+                              {item.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => onUpdateQuantity(item.product.id, 1)}
+                              className="w-6 h-6 rounded flex items-center justify-center bg-white border border-[#D5D4CE] hover:border-[#1C9A6C] hover:text-[#1C9A6C] transition-colors"
+                            >
+                              <Plus className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => onRemoveItem(item.product.id)}
+                              className="ml-2 w-6 h-6 rounded flex items-center justify-center bg-red-50 border border-red-100 hover:border-red-300 hover:text-red-600 text-red-400 transition-colors"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
                 )}
-              </button>
-              <p className="text-[11px] text-center text-[#717171] mt-2">
-                🔒 Stored securely in Firestore &bull; No upfront payment required
-              </p>
+              </div>
             </div>
+
+            {/* You Might Also Like Section */}
+            {(() => {
+              const cartProductIds = new Set(items.map(i => i.product.id));
+              const suggestedProducts = products.filter(p => !cartProductIds.has(p.id)).slice(0, 2);
+              
+              if (suggestedProducts.length === 0 || items.length === 0) return null;
+              
+              return (
+                <div className="pt-2">
+                  <span className="text-xs font-bold text-[#141414] uppercase tracking-wider block mb-3">
+                    You might also like
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    {suggestedProducts.map(product => (
+                      <div key={product.id} className="border border-[#E5E4DE] rounded-lg p-2.5 flex flex-col">
+                        <div className="flex gap-2.5 mb-2">
+                          <div className="w-10 h-10 rounded-md overflow-hidden bg-[#F5F4F0] shrink-0">
+                            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          </div>
+                          <div>
+                            <h5 className="text-[11px] font-bold text-[#141414] leading-tight line-clamp-2">{product.name}</h5>
+                            <span className="text-[10px] text-[#717171]">₹{product.price}</span>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => onAddToCart(product)}
+                          className="mt-auto w-full py-1.5 rounded bg-white border border-[#1C9A6C] text-[#1C9A6C] hover:bg-[#1C9A6C] hover:text-white text-[11px] font-bold transition-colors"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {items.length > 0 && (
+              <>
+                {/* Notice regarding Pre-order model */}
+                <div className="flex items-start gap-2.5 p-3 rounded-lg bg-[#1C9A6C]/8 border border-[#1C9A6C]/20 text-xs text-[#141414]">
+                  <ShieldCheck className="w-4 h-4 text-[#1C9A6C] shrink-0 mt-0.5" />
+                  <p className="leading-relaxed">
+                    <strong>Pre-Order Policy:</strong> Orders are registered as <strong>Pending</strong> in our database. You will not be charged now. Our lab team will verify reagent batch availability and contact you prior to delivery.
+                  </p>
+                </div>
+
+                {errorMsg && (
+                  <div
+                    id="pre-order-error-message"
+                    className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700"
+                  >
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
+                    <span>{errorMsg}</span>
+                  </div>
+                )}
+
+                {/* Inputs */}
+                <div className="space-y-3.5">
+                  <div>
+                    <label
+                      htmlFor="preorder-name"
+                      className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
+                    >
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id="preorder-name"
+                      type="text"
+                      required
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                      placeholder="e.g. Priyanshu Sharma"
+                      className="w-full px-3.5 py-2.5 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label
+                        htmlFor="preorder-phone"
+                        className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
+                      >
+                        Mobile Phone <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="preorder-phone"
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="10-digit mobile number"
+                        className="w-full px-3.5 py-2.5 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="preorder-email"
+                        className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
+                      >
+                        Email Address <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="preorder-email"
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="name@example.com"
+                        className="w-full px-3.5 py-2.5 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="preorder-address"
+                      className="block text-xs font-bold text-[#141414] uppercase tracking-wider mb-1"
+                    >
+                      Flat, House No., Building &amp; Street Address <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      id="preorder-address"
+                      required
+                      rows={2}
+                      value={addressLine}
+                      onChange={(e) => setAddressLine(e.target.value)}
+                      placeholder="e.g. Flat 301, Tower B, Green Glen Layout, Bellandur"
+                      className="w-full px-3.5 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-sm text-[#141414] placeholder:text-[#A3A3A3] outline-hidden resize-none transition-colors"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2.5">
+                    <div>
+                      <label
+                        htmlFor="preorder-city"
+                        className="block text-[11px] font-bold text-[#141414] uppercase tracking-wider mb-1"
+                      >
+                        City <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="preorder-city"
+                        type="text"
+                        required
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="Bengaluru"
+                        className="w-full px-3 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-xs text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="preorder-state"
+                        className="block text-[11px] font-bold text-[#141414] uppercase tracking-wider mb-1"
+                      >
+                        State
+                      </label>
+                      <input
+                        id="preorder-state"
+                        type="text"
+                        value={stateName}
+                        onChange={(e) => setStateName(e.target.value)}
+                        placeholder="Karnataka"
+                        className="w-full px-3 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-xs text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="preorder-pincode"
+                        className="block text-[11px] font-bold text-[#141414] uppercase tracking-wider mb-1"
+                      >
+                        PIN Code <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="preorder-pincode"
+                        type="text"
+                        required
+                        maxLength={6}
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
+                        placeholder="560103"
+                        className="w-full px-3 py-2 rounded-md border border-[#D5D4CE] focus:border-[#1C9A6C] focus:ring-1 focus:ring-[#1C9A6C] text-xs text-[#141414] placeholder:text-[#A3A3A3] outline-hidden transition-colors"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-2">
+                  <button
+                    id="submit-preorder-button"
+                    type="submit"
+                    disabled={isSubmitting || items.length === 0}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] disabled:opacity-50 text-white text-sm font-bold tracking-wide transition-colors cursor-pointer shadow-xs"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Saving Pre-Order to Database...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Confirm Pre-Order (₹{totalAmount})</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                  <p className="text-[11px] text-center text-[#717171] mt-2">
+                    🔒 Stored securely in Firestore &bull; No upfront payment required
+                  </p>
+                </div>
+              </>
+            )}
           </form>
         )}
       </div>

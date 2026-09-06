@@ -32,8 +32,8 @@ export const ShopSection: React.FC<ShopSectionProps> = ({ onAddToCart }) => {
           </p>
         </div>
 
-        {/* Product Cards Grid: 3 Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mb-8">
+        {/* Product Cards Grid: 4 Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch mb-8">
           {products.map((product) => (
             <ProductCard
               key={product.id}

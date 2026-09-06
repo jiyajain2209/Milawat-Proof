@@ -33,21 +33,22 @@ export const Hero: React.FC<HeroProps> = ({
               India, what&apos;s{' '}
               <span className="relative inline-block whitespace-nowrap text-[#141414]">
                 <span className="relative z-10">actually</span>
-                {/* Handcrafted organic curved green underline for emphasis */}
+                {/* Handcrafted organic green circle for emphasis */}
                 <svg
-                  className="absolute -bottom-2 sm:-bottom-2.5 left-0 w-full h-3 sm:h-4 text-[#1C9A6C] overflow-visible pointer-events-none"
-                  viewBox="0 0 180 16"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[140%] text-[#1C9A6C] pointer-events-none z-0"
+                  viewBox="0 0 100 40"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   preserveAspectRatio="none"
                   aria-hidden="true"
                 >
                   <path
-                    d="M 4 11 Q 50 3, 90 9 T 176 7"
-                    stroke="#1C9A6C"
-                    strokeWidth="4"
+                    d="M 50 4 C 85 2, 98 10, 96 22 C 94 34, 75 38, 50 38 C 25 38, 6 32, 4 20 C 2 8, 20 4, 50 4 C 60 4, 70 5, 75 7"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    vectorEffect="non-scaling-stroke"
                   />
                 </svg>
               </span>{' '}

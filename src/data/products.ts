@@ -17,6 +17,7 @@ export const products: Product[] = [
       'Neutraliser',
     ],
     price: 299,
+    originalPrice: 399,
     testCount: '1 Test',
     testDuration: '2-3 minutes',
     whatsInside: [
@@ -33,7 +34,7 @@ export const products: Product[] = [
   {
     id: 'dairy-purity-kit',
     name: 'Dairy Purity Test Kit',
-    category: 'paneer', // Keeping it in an existing category, or we can use bundle/etc
+    category: 'paneer',
     tier: 'single',
     tierLabel: 'Single-Use',
     tagline: 'Checks butter, ghee, and paneer',
@@ -44,7 +45,8 @@ export const products: Product[] = [
       'Vegetable Fat',
     ],
     price: 299,
-    testCount: '1 Test',
+    originalPrice: 399,
+    testCount: '5 Tests',
     testDuration: '3-4 minutes',
     whatsInside: [
       '1x Dual-Zone Reaction Swab',
@@ -60,7 +62,7 @@ export const products: Product[] = [
   {
     id: 'protein-purity-kit',
     name: 'Protein Purity Testing Kit',
-    category: 'ghee', // Will leave it as ghee/bundle for now, doesn't really matter for UI unless we filter by it
+    category: 'ghee',
     tier: 'single',
     tierLabel: 'Single-Use',
     tagline: 'Checks whey protein for fillers',
@@ -71,6 +73,7 @@ export const products: Product[] = [
       'Starch',
     ],
     price: 299,
+    originalPrice: 399,
     testCount: '1 Test',
     testDuration: '3-5 minutes',
     whatsInside: [
@@ -83,5 +86,34 @@ export const products: Product[] = [
     dimensions: '7x5x4 cm',
     batchNo: 'MP2405-003',
     imageUrl: '/Gemini_Generated_Image_su9sdrsu9sdrsu9s.png',
+  },
+  {
+    id: 'complete-bundle-3',
+    name: 'Complete Bundle — All 3 Kits',
+    category: 'bundle',
+    tier: 'multi',
+    tierLabel: 'Multi-Use',
+    tagline: 'Complete household protection',
+    description: 'Get all three of our premium diagnostic kits (Milk, Dairy, and Protein Purity) in one convenient bundle for complete household peace of mind.',
+    testsCovered: [
+      'Milk Adulterants',
+      'Dairy Impurities',
+      'Protein Fillers',
+    ],
+    price: 799,
+    originalPrice: 899,
+    badge: 'Best Value',
+    isBestValue: true,
+    testCount: '7 Tests Total',
+    testDuration: 'Varies',
+    whatsInside: [
+      'Milk Adulteration Test Kit (1 Test)',
+      'Dairy Purity Test Kit (5 Tests)',
+      'Protein Purity Testing Kit (1 Test)',
+    ],
+    sampleRequired: 'Various samples',
+    dimensions: '20x15x10 cm',
+    batchNo: 'MP2405-BNDL',
+    imageUrl: '/Gemini_Generated_Image_7couu87couu87cou.png',
   }
 ];

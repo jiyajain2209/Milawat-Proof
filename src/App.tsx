@@ -8,7 +8,6 @@ import { HowItWorks } from './components/HowItWorks';
 import { ShopSection } from './components/ShopSection';
 import { FAQ } from './components/FAQ';
 import { ContactSection } from './components/ContactSection';
-import { CartDrawer } from './components/CartDrawer';
 import { PreOrderCheckoutModal } from './components/PreOrderCheckoutModal';
 import { LiquidWaveDivider } from './components/LiquidWaveDivider';
 import { AdminPortal } from './components/admin/AdminPortal';
@@ -82,8 +81,7 @@ export default function App() {
       }
       return [...prev, { product, quantity: 1 }];
     });
-    showToast(`Added "${product.name}" to pre-orders.`);
-    setIsCartOpen(true);
+    showToast(`Added "${product.name}" to cart.`);
   };
 
   const handleUpdateQuantity = (productId: string, delta: number) => {
@@ -180,7 +178,7 @@ export default function App() {
         activeNav={activeNav}
         onNavigate={handleNavigate}
         cartCount={totalCartCount}
-        onOpenCart={() => setIsCartOpen(true)}
+        onOpenCart={handleCheckout}
       />
 
       {/* Main Content Area */}
@@ -216,23 +214,15 @@ export default function App() {
         <ContactSection onSuccessToast={showToast} />
       </main>
 
-      {/* Shopping Cart Drawer */}
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onCheckout={handleCheckout}
-        isCheckoutLoading={isCheckoutLoading}
-      />
-
       {/* Pre-Order Checkout Modal */}
       <PreOrderCheckoutModal
         isOpen={isCheckoutModalOpen}
         onClose={() => setIsCheckoutModalOpen(false)}
         items={cartItems}
         onOrderSuccess={handleOrderSuccess}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveItem}
+        onAddToCart={handleAddToCart}
       />
 
       {/* Main Footer in Dark Aesthetic */}

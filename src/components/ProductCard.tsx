@@ -1,6 +1,6 @@
 import React from 'react';
 import { Product } from '../types';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Sparkles } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -12,11 +12,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onAddToCart,
 }) => {
+  const isBundle = product.isBestValue;
+  
   return (
     <div
       id={`product-card-${product.id}`}
-      className={`bg-white rounded-xl border border-[#e5e4de] hover:border-[#1C9A6C]/50 flex flex-col justify-between relative transition-all duration-200 p-5 sm:p-6`}
+      className={`bg-white rounded-xl border flex flex-col justify-between relative transition-all duration-200 p-5 sm:p-6 ${
+        isBundle 
+          ? 'border-[#1C9A6C] shadow-lg md:scale-105 z-10' 
+          : 'border-[#e5e4de] hover:border-[#1C9A6C]/50'
+      }`}
     >
+      {isBundle && product.badge && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#1C9A6C] text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-sm">
+          <Sparkles className="w-3 h-3" />
+          {product.badge}
+        </div>
+      )}
+      
       <div>
         {/* Product Image / Packaging Box Photo (exact uploaded image) */}
         <div
@@ -44,8 +57,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Card Footer: Price & Buy Now */}
       <div className="mt-6 pt-4 border-t border-[#F5F4F0]">
-        <div className="flex items-baseline mb-3">
-          <span className="text-xl font-black text-[#141414] tracking-tight">
+        <div className="flex items-baseline gap-2 mb-3">
+          {product.originalPrice && (
+            <span className="text-sm font-medium text-[#A3A3A3] line-through">
+              ₹{product.originalPrice.toLocaleString('en-IN')}
+            </span>
+          )}
+          <span className={`text-xl font-black tracking-tight ${product.originalPrice ? 'text-[#1C9A6C]' : 'text-[#141414]'}`}>
             ₹{product.price.toLocaleString('en-IN')}
           </span>
         </div>
@@ -56,10 +74,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           type="button"
           onClick={() => onAddToCart(product)}
           aria-label={`Pre-Order ${product.name}`}
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-md bg-[#1C9A6C] hover:bg-[#167e58] text-white text-xs font-bold tracking-wide transition-colors cursor-pointer"
+          className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-md text-xs font-bold tracking-wide transition-colors cursor-pointer ${
+            isBundle 
+              ? 'bg-[#1C9A6C] hover:bg-[#167e58] text-white' 
+              : 'bg-[#1C9A6C] hover:bg-[#167e58] text-white'
+          }`}
         >
           <ShoppingBag className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-          <span>Pre-Order</span>
+          <span>Add to Cart</span>
         </button>
       </div>
     </div>
