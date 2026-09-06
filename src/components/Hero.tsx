@@ -102,7 +102,7 @@ export const Hero: React.FC<HeroProps> = ({
               {/* Image comparing real vs adulterated dairy */}
               <img
                 id="hero-photo"
-                src="/Screenshot%202026-09-06%20121414.png"
+                src="/Gemini_Generated_Image_m7zr1um7zr1um7zr.png"
                 alt="Real vs adulterated milk, paneer, and ghee comparison"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-[1.02]"
