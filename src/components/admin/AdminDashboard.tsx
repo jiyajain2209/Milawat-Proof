@@ -3,7 +3,9 @@ import { User, signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
 import { Order, OrderStatus } from '../../types';
 import { subscribeToOrders } from '../../services/adminOrderService';
+import { subscribeToMessages } from '../../services/adminMessageService';
 import { OrderDetailModal } from './OrderDetailModal';
+import { AdminMessagesView } from './AdminMessagesView';
 import {
   Package,
   Clock,
@@ -18,6 +20,7 @@ import {
   AlertCircle,
   ChevronRight,
   TrendingUp,
+  MessageSquare,
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -31,13 +34,17 @@ interface AdminDashboardProps {
 }
 
 type FilterStatus = 'All' | OrderStatus;
+type AdminTab = 'orders' | 'messages';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   user,
   onNavigateToStore,
   onSignOut,
 }) => {
+  const [activeTab, setActiveTab] = useState<AdminTab>('orders');
   const [orders, setOrders] = useState<Order[]>([]);
+  const [messagesCount, setMessagesCount] = useState<number>(0);
+  const [newMessagesCount, setNewMessagesCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,7 +56,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setIsLoading(true);
     setError(null);
 
-    const unsubscribe = subscribeToOrders(
+    const unsubscribeOrders = subscribeToOrders(
       (updatedOrders) => {
         setOrders(updatedOrders);
         setIsLoading(false);
@@ -67,7 +74,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       }
     );
 
-    return () => unsubscribe();
+    // Keep message counts in sync for the tab badge
+    const unsubscribeMessages = subscribeToMessages(
+      (msgs) => {
+        setMessagesCount(msgs.length);
+        setNewMessagesCount(msgs.filter((m) => m.status === 'New').length);
+      },
+      (err) => {
+        console.warn('Admin messages count stream notice:', err);
+      }
+    );
+
+    return () => {
+      unsubscribeOrders();
+      unsubscribeMessages();
+    };
   }, []);
 
   const handleSignOut = async () => {
@@ -189,19 +210,84 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {/* Error Alert */}
-        {error && (
-          <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
-            <div>
-              <p className="font-bold">Firestore Access Error</p>
-              <p>{error}</p>
-            </div>
-          </div>
-        )}
+        {/* Navigation Tabs: Orders vs Messages */}
+        <section className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E5E4DE] pb-4">
+          <div className="flex items-center gap-2">
+            <button
+              id="admin-tab-orders-btn"
+              type="button"
+              onClick={() => setActiveTab('orders')}
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'orders'
+                  ? 'bg-[#141414] text-white shadow-xs'
+                  : 'bg-white text-[#525252] hover:bg-[#EAE8E3] border border-[#E5E4DE]'
+              }`}
+            >
+              <Package className="w-4 h-4" />
+              <span>Orders</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                  activeTab === 'orders'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-[#E5E4DE] text-[#717171]'
+                }`}
+              >
+                {orders.length}
+              </span>
+            </button>
 
-        {/* 3 Main Summary Cards Requested by User */}
-        <section id="admin-summary-cards" className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <button
+              id="admin-tab-messages-btn"
+              type="button"
+              onClick={() => setActiveTab('messages')}
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'messages'
+                  ? 'bg-[#141414] text-white shadow-xs'
+                  : 'bg-white text-[#525252] hover:bg-[#EAE8E3] border border-[#E5E4DE]'
+              }`}
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>Messages</span>
+              {newMessagesCount > 0 ? (
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1C9A6C] text-white font-bold">
+                  {newMessagesCount} New
+                </span>
+              ) : (
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                    activeTab === 'messages'
+                      ? 'bg-white/20 text-white'
+                      : 'bg-[#E5E4DE] text-[#717171]'
+                  }`}
+                >
+                  {messagesCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          <div className="text-xs text-[#717171] hidden sm:block">
+            {activeTab === 'orders'
+              ? 'Real-time pre-orders synchronization'
+              : 'Real-time contact inquiries & sample photo submissions'}
+          </div>
+        </section>
+
+        {activeTab === 'orders' ? (
+          <>
+            {/* Error Alert */}
+            {error && (
+              <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+                <div>
+                  <p className="font-bold">Firestore Access Error</p>
+                  <p>{error}</p>
+                </div>
+              </div>
+            )}
+
+            {/* 3 Main Summary Cards Requested by User */}
+            <section id="admin-summary-cards" className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Card 1: Total Pending Pre-Orders */}
           <div className="p-5 rounded-xl bg-white border border-[#E5E4DE] shadow-xs flex items-center justify-between">
             <div>
@@ -469,6 +555,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
           )}
         </section>
+        </>
+        ) : (
+          <AdminMessagesView />
+        )}
       </main>
 
       {/* Full Order Detail Modal */}

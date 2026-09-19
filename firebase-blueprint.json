@@ -70,6 +70,64 @@
         "orderStatus",
         "createdAt"
       ]
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Customer contact form submissions with optional photo attachment",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Sender full name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Sender email address"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional contact phone number"
+        },
+        "message": {
+          "type": "string",
+          "description": "Inquiry or message text"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Optional Firebase Storage URL of attached test strip or milk sample photo"
+        },
+        "status": {
+          "type": "string",
+          "default": "New",
+          "description": "Status of the message submission"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of message submission"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of message submission"
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "message",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/orders/{orderId}": {
+      "schema": "orders",
+      "description": "Customer pre-orders for diagnostic kits"
+    },
+    "/messages/{messageId}": {
+      "schema": "messages",
+      "description": "Customer messages and photo inquiries"
     }
   }
 }

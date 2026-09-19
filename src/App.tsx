@@ -195,14 +195,14 @@ export default function App() {
         {/* Shop Section: All 8 Test Kits (Single-Use and Multi-Use Tiers) */}
         <ShopSection onAddToCart={handleAddToCart} />
 
-        {/* Liquid Wave Edge Divider (Shop Shelf to Why We Exist) */}
+        {/* Liquid Wave Edge Divider */}
         <LiquidWaveDivider id="divider-shop-why" variant="warm" containerBg="bg-white" flipped />
-
-        {/* Why Milawat Proof Exists Section */}
-        <WhyWeExist />
 
         {/* How It Works: 3-step simple process */}
         <HowItWorks />
+
+        {/* Why Milawat Proof Exists Section */}
+        <WhyWeExist />
 
         {/* Thin Trust Markers Strip */}
         <TrustStrip />

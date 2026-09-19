@@ -49,3 +49,17 @@ export interface Order {
   createdAt: string; // ISO string format
   notes: string;
 }
+
+export type MessageStatus = 'New' | 'Read' | 'Replied' | 'Archived';
+
+export interface ContactMessage {
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+  imageUrl?: string | null;
+  createdAt: string;
+  timestamp?: string | number;
+  status?: string;
+}
