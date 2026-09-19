@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Logo } from './Logo';
-import { Mail, Phone, MapPin, Instagram, Twitter, Youtube, Linkedin, ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Youtube, Linkedin, ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   onNavigate?: (navId: string) => void;
@@ -161,38 +161,32 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onToast }) => {
                 </span>
                 <div className="flex items-center gap-2.5">
                   <a
-                    href="https://instagram.com"
+                    id="footer-social-instagram"
+                    href="https://www.instagram.com/milawat.proof?stkn=MWk3anJ6ZHJscGw5YQ%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-8 h-8 rounded-md bg-[#262626] flex items-center justify-center text-[#A3A3A3] hover:text-white hover:bg-[#1C9A6C] transition-colors"
-                    aria-label="Instagram"
+                    aria-label="Instagram (@milawat.proof)"
                   >
                     <Instagram className="w-4 h-4" />
                   </a>
                   <a
-                    href="https://twitter.com"
+                    id="footer-social-youtube"
+                    href="https://www.youtube.com/channel/UCbEeQySv0TLlJmz_43m-S_Q"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-8 h-8 rounded-md bg-[#262626] flex items-center justify-center text-[#A3A3A3] hover:text-white hover:bg-[#1C9A6C] transition-colors"
-                    aria-label="Twitter / X"
-                  >
-                    <Twitter className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="https://youtube.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-md bg-[#262626] flex items-center justify-center text-[#A3A3A3] hover:text-white hover:bg-[#1C9A6C] transition-colors"
-                    aria-label="YouTube"
+                    aria-label="YouTube (Milawat Proof)"
                   >
                     <Youtube className="w-4 h-4" />
                   </a>
                   <a
-                    href="https://linkedin.com"
+                    id="footer-social-linkedin"
+                    href="https://www.linkedin.com/in/milawat-proof-b4576b432"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-8 h-8 rounded-md bg-[#262626] flex items-center justify-center text-[#A3A3A3] hover:text-white hover:bg-[#1C9A6C] transition-colors"
-                    aria-label="LinkedIn"
+                    aria-label="LinkedIn (Milawat Proof)"
                   >
                     <Linkedin className="w-4 h-4" />
                   </a>
